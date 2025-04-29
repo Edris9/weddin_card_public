@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gästlista</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #6c9cff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .summary {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .responses {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .responses th, .responses td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .responses tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .responses th {
+            background-color: #6c9cff;
+            color: white;
+        }
+        
+        .attending-yes {
+            color: green;
+            font-weight: bold;
+        }
+        
+        .attending-no {
+            color: red;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6c9cff;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gästlista</h1>
+        
+        <div class="summary">
+            Totalt antal gäster som kommer: <strong>5</strong>
+        </div>
+        
+        <table class="responses">
+            <thead>
+                <tr>
+                    <th>Tidpunkt</th>
+                    <th>Namn</th>
+                    <th>Kommer</th>
+                    <th>Antal</th>
+                    <th>Meddelande</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td>2025-04-29 15:16:45</td>
+                    <td>asdf</td>
+                    <td class="attending-no">
+                        Nej
+                    </td>
+                    <td>3</td>
+                    <td>asdf</td>
+                </tr>
+                
+                <tr>
+                    <td>2025-04-29 15:27:53</td>
+                    <td>asdf</td>
+                    <td class="attending-yes">
+                        Ja
+                    </td>
+                    <td>5</td>
+                    <td>asdf</td>
+                </tr>
+                
+                <tr>
+                    <td>2025-04-29 15:43:01</td>
+                    <td>sdf</td>
+                    <td class="attending-no">
+                        Nej
+                    </td>
+                    <td>1</td>
+                    <td>asdf</td>
+                </tr>
+                
+            </tbody>
+        </table>
+        
+        <a href="/" class="back-link">Tillbaka till inbjudan</a>
+    </div>
+</body>
+</html>
