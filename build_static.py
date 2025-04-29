@@ -1,5 +1,6 @@
 from flask_frozen import Freezer
 from app import app
+from flask import render_template
 import os
 
 # Skapa en mapp för statiska filer om den inte finns
@@ -27,6 +28,10 @@ def url_generator():
     yield '/responses'
     yield '/thankyou.html'
 
+
+@app.route('/thankyou.html')
+def thankyou():
+    return render_template('thankyou.html')
 
 if __name__ == '__main__':
     freezer.freeze()
