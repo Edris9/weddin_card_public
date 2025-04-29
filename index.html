@@ -253,23 +253,21 @@
             </div>
             
             <!-- Tar bort bild-div eftersom vi använder den som bakgrund istället -->
+        
             
-            <div class="attending">
-                <input type="checkbox" id="attending-checkbox">
-                <label for="attending-checkbox" id="attending-label">Jag/Vi kommer</label>
-            </div>
-            
-            <form id="rsvp-form" name="wedding-rsvp" method="POST" data-netlify="true">
-                <input type="hidden" name="form-name" value="wedding-rsvp" />
+            <form id="rsvp-form" action="https://formsubmit.co/edriskohestani1010@gmail.com" method="POST">
+                <!-- Ersätt DIN_EMAIL med din faktiska Gmail-adress -->
+                <input type="hidden" name="_next" value="https://steady-pegasus-661065.netlify.app/thankyou.html">
+                <input type="hidden" name="_subject" value="Nytt bröllopssvar!">
+                
+                <div class="attending">
+                    <input type="checkbox" id="attending-checkbox" name="attending" value="Ja">
+                    <label for="attending-checkbox" id="attending-label">Jag/Vi kommer</label>
+                </div>
                 
                 <div class="form-group">
                     <label for="name" id="name-label">Namn och efternamn:</label>
                     <input type="text" id="name" name="name" required>
-                </div>
-                
-                <div class="attending">
-                    <input type="checkbox" id="attending-checkbox" name="attending">
-                    <label for="attending-checkbox" id="attending-label">Jag/Vi kommer</label>
                 </div>
                 
                 <div class="form-group">
