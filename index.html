@@ -259,20 +259,17 @@
                 <label for="attending-checkbox" id="attending-label">Jag/Vi kommer</label>
             </div>
             
-            <form id="rsvp-form" name="wedding-rsvp" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <form id="rsvp-form" name="wedding-rsvp" method="POST" data-netlify="true">
                 <input type="hidden" name="form-name" value="wedding-rsvp" />
-                <p class="hidden" style="display:none">
-                    <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-                </p>
                 
                 <div class="form-group">
                     <label for="name" id="name-label">Namn och efternamn:</label>
                     <input type="text" id="name" name="name" required>
                 </div>
                 
-                <div class="form-group">
-                    <label for="attending" id="attending-label">Jag/Vi kommer</label>
+                <div class="attending">
                     <input type="checkbox" id="attending-checkbox" name="attending">
+                    <label for="attending-checkbox" id="attending-label">Jag/Vi kommer</label>
                 </div>
                 
                 <div class="form-group">
