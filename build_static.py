@@ -25,6 +25,8 @@ def url_generator():
     # Enbart statiska sidor
     yield '/'
     yield '/responses'
+    yield '/thankyou.html'
+
 
 if __name__ == '__main__':
     freezer.freeze()
