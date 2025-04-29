@@ -259,15 +259,25 @@
                 <label for="attending-checkbox" id="attending-label">Jag/Vi kommer</label>
             </div>
             
-            <form id="rsvp-form">
+            <form id="rsvp-form" name="wedding-rsvp" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                <input type="hidden" name="form-name" value="wedding-rsvp" />
+                <p class="hidden" style="display:none">
+                    <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                </p>
+                
                 <div class="form-group">
                     <label for="name" id="name-label">Namn och efternamn:</label>
-                    <input type="text" id="name" required>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="attending" id="attending-label">Jag/Vi kommer</label>
+                    <input type="checkbox" id="attending-checkbox" name="attending">
                 </div>
                 
                 <div class="form-group">
                     <label for="guests" id="guests-label">Antal personer:</label>
-                    <select id="guests">
+                    <select id="guests" name="guests">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -278,7 +288,7 @@
                 
                 <div class="form-group">
                     <label for="message" id="message-label">Meddelande:</label>
-                    <textarea id="message"></textarea>
+                    <textarea id="message" name="message"></textarea>
                 </div>
                 
                 <button type="submit" class="send-button" id="send-button">Skicka</button>
@@ -489,6 +499,16 @@
             });
         });
 
+
+
+                // Hantera formulärinlämning
+        document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+            // Formuläret skickas till Netlify, så vi behöver inte förhindra standardbeteendet
+            // Men vi visar ändå bekräftelsemodalen
+            setTimeout(function() {
+                showModal();
+            }, 1000);
+        });
         // Uppdatera översättningarna för att inkludera specifika meddelanden
         translations.sv.modalAttendingMessage = "Tack för ditt svar. Vi ser fram emot att träffa dig på vår stora dag!";
         translations.sv.modalNotAttendingMessage = "Tack för ditt svar. Vi är ledsna att du inte kan komma.";
