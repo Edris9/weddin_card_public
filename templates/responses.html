@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gästlista</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #6c9cff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .summary {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .responses {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .responses th, .responses td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .responses tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .responses th {
+            background-color: #6c9cff;
+            color: white;
+        }
+        
+        .attending-yes {
+            color: green;
+            font-weight: bold;
+        }
+        
+        .attending-no {
+            color: red;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6c9cff;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gästlista</h1>
+        
+        <div class="summary">
+            Totalt antal gäster som kommer: <strong>{{ total_guests }}</strong>
+        </div>
+        
+        <table class="responses">
+            <thead>
+                <tr>
+                    <th>Tidpunkt</th>
+                    <th>Namn</th>
+                    <th>Kommer</th>
+                    <th>Antal</th>
+                    <th>Meddelande</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for response in responses %}
+                <tr>
+                    <td>{{ response.timestamp }}</td>
+                    <td>{{ response.name }}</td>
+                    <td class="{% if response.attending == 'Ja' %}attending-yes{% else %}attending-no{% endif %}">
+                        {{ response.attending }}
+                    </td>
+                    <td>{{ response.guests }}</td>
+                    <td>{{ response.message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <a href="/" class="back-link">Tillbaka till inbjudan</a>
+    </div>
+</body>
+</html>

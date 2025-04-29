@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bröllopsinbjudan</title>
+    <header_image>
+        <img src="{{ url_for('static', filename='images/image1.webp') }}" alt="Bröllopsinbjudan" style="width: 100%; height: auto; border-radius: 15px; position: absolute; top: 0; left: 0; z-index: -1;">
+    </header_image>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{{ url_for('static', filename='images/image2.webp') }}");
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1; /* Justera denna värde för att göra bakgrunden ljusare/mörkare */
+            z-index: 0;
+        }
+        
+        .card-header {
+            background-color: #6c9cff;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .card-body {
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .info {
+            margin-bottom: 20px;
+        }
+        
+        .info div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .info i {
+            margin-right: 10px;
+            color: #6c9cff;
+            font-size: 20px;
+            min-width: 24px;
+            text-align: center;
+        }
+        
+        .attending {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .attending input[type="checkbox"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .send-button {
+            background-color: #6c9cff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .send-button:hover {
+            background-color: #5a8bfa;
+        }
+        
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .language-selector select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #6c9cff;
+        }
+        
+        .modal-content button {
+            background-color: #6c9cff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="language-selector">
+        <select id="language-select" onchange="changeLanguage()">
+            <option value="sv">Svenska</option>
+            <option value="en">English</option>
+            <option value="fa">فارسی</option>
+        </select>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h1 id="header-title">Bröllopsinbjudan</h1>
+            <p id="header-subtitle">Vi hoppas du kan komma!</p>
+
+        </div>
+
+        <div class="countdown-container">
+            <h3 id="countdown-header">Nedräkning till bröllopet:</h3>
+            <div class="countdown" id="countdown"></div>
+        </div>
+        
+        <style>
+        .countdown-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: rgba(108, 156, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        #countdown-header {
+            margin-bottom: 10px;
+            color: #6c9cff;
+        }
+        
+        .countdown {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        </style>
+        
+        <div class="card-body">
+            <div class="info">
+                <div>
+                    <i class="far fa-clock"></i>
+                    <span id="time-text">Tid:</span> <span id="time">18:00</span>
+                </div>
+                <div>
+                    <i class="far fa-calendar"></i>
+                    <span id="date-text">Datum:</span> <span id="date">2025/08/10</span>
+                </div>
+                <div>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="address-text">Adress:</span> <span id="address">Göteborg</span>
+                </div>
+            </div>
+            
+            <!-- Tar bort bild-div eftersom vi använder den som bakgrund istället -->
+            
+            <div class="attending">
+                <input type="checkbox" id="attending-checkbox">
+                <label for="attending-checkbox" id="attending-label">Jag/Vi kommer</label>
+            </div>
+            
+            <form id="rsvp-form">
+                <div class="form-group">
+                    <label for="name" id="name-label">Namn och efternamn:</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="guests" id="guests-label">Antal personer:</label>
+                    <select id="guests">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message" id="message-label">Meddelande:</label>
+                    <textarea id="message"></textarea>
+                </div>
+                
+                <button type="submit" class="send-button" id="send-button">Skicka</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Välkommen till oss!</h2>
+            <p id="modal-message">Tack för ditt svar.</p>
+            <button id="modal-close-button" onclick="closeModal()">Stäng</button>
+        </div>
+    </div>
+
+
+    
+
+    <script>
+        // Språköversättningar
+
+        
+        const translations = {
+            sv: {
+                headerTitle: "Bröllopsinbjudan",
+                headerSubtitle: "Tack så mycket för din varma och kärleksfulla närvaro i vårt firande.",
+                timeText: "Tid:",
+                dateText: "Datum:",
+                addressText: "Adress:",
+                attendingLabel: "Jag/Vi kommer",
+                nameLabel: "Namn och efternamn:",
+                guestsLabel: "Antal personer:",
+                messageLabel: "Meddelande:",
+                sendButton: "Skicka",
+                modalTitle: "Välkommen till oss!",
+                modalMessage: "Tack för ditt svar.",
+                modalCloseButton: "Stäng"
+            },
+            en: {
+                headerTitle: "Wedding Invitation",
+                headerSubtitle: "Thank you very much for your warm and loving presence in our celebration.!",
+                timeText: "Time:",
+                dateText: "Date:",
+                addressText: "Address:",
+                attendingLabel: "I/We will attend",
+                nameLabel: "Name and surname:",
+                guestsLabel: "Number of people:",
+                messageLabel: "Message:",
+                sendButton: "Send",
+                modalTitle: "Welcome to us!",
+                modalMessage: "Thank you for your response.",
+                modalCloseButton: "Close"
+            },
+            fa: {
+                headerTitle: "دعوت نامه عروسی",
+                headerSubtitle: "از حضور گرم و پر مهرتان در شادی ما بسیار سپاسگزاریم.",
+                timeText: "زمان:",
+                dateText: "تاریخ:",
+                addressText: "آدرس:",
+                attendingLabel: "من/ما میاییم",
+                nameLabel: "نام و نام خانوادگی:",
+                guestsLabel: "تعداد افراد:",
+                messageLabel: "پیام:",
+                sendButton: "ارسال",
+                modalTitle: "خوش آمدید!",
+                modalMessage: "از پاسخ شما متشکریم.",
+                modalCloseButton: "بستن"
+            }
+        };
+
+        // Funktion för att byta språk
+        function changeLanguage() {
+            const lang = document.getElementById('language-select').value;
+            const t = translations[lang];
+            
+            // Uppdatera alla texter
+            document.getElementById('header-title').textContent = t.headerTitle;
+            document.getElementById('header-subtitle').textContent = t.headerSubtitle;
+            document.getElementById('time-text').textContent = t.timeText;
+            document.getElementById('date-text').textContent = t.dateText;
+            document.getElementById('address-text').textContent = t.addressText;
+            document.getElementById('attending-label').textContent = t.attendingLabel;
+            document.getElementById('name-label').textContent = t.nameLabel;
+            document.getElementById('guests-label').textContent = t.guestsLabel;
+            document.getElementById('message-label').textContent = t.messageLabel;
+            document.getElementById('send-button').textContent = t.sendButton;
+            document.getElementById('modal-title').textContent = t.modalTitle;
+            document.getElementById('modal-message').textContent = t.modalMessage;
+            document.getElementById('modal-close-button').textContent = t.modalCloseButton;
+            
+            // För persiska, ändra text-riktningen till höger-till-vänster
+            if (lang === 'fa') {
+                document.body.style.direction = 'rtl';
+            } else {
+                document.body.style.direction = 'ltr';
+            }
+        }
+
+        // Funktion för att visa bekräftelsemodul
+        function showModal() {
+            document.getElementById('confirmation-modal').style.display = 'flex';
+        }
+
+        // Funktion för att stänga bekräftelsemodul
+        function closeModal() {
+            document.getElementById('confirmation-modal').style.display = 'none';
+        }
+
+        // Lägg till detta i slutet av ditt script-avsnitt på index.html
+        // Nedräkningstimer för bröllopet
+        function updateCountdown() {
+            const weddingDate = new Date('August 10, 2025 18:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+            
+            // Beräkna dagar, timmar, minuter och sekunder
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Uppdatera element med id "countdown"
+            document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            
+            // Om nedräkningen är slut
+            if (distance < 0) {
+                clearInterval(countdownTimer);
+                document.getElementById('countdown').innerHTML = 'Bröllopet pågår just nu!';
+            }
+        }
+
+        // Uppdatera varje sekund
+        const countdownTimer = setInterval(updateCountdown, 1000);
+
+        // Kör en gång direkt för att undvika fördröjning
+        updateCountdown();
+
+        // Hantera formulärinlämning
+        // Ersätt den befintliga fetch-koden med denna förbättrade version
+        document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Visa laddningsindikator
+            const sendButton = document.getElementById('send-button');
+            const originalButtonText = sendButton.textContent;
+            sendButton.textContent = "Skickar...";
+            sendButton.disabled = true;
+            
+            // Hämta formulärdata
+            const name = document.getElementById('name').value;
+            const isAttending = document.getElementById('attending-checkbox').checked;
+            const guests = document.getElementById('guests').value;
+            const message = document.getElementById('message').value;
+            
+            // Validering på klientsidan
+            if (!name.trim()) {
+                alert("Vänligen ange ditt namn");
+                sendButton.textContent = originalButtonText;
+                sendButton.disabled = false;
+                return;
+            }
+            
+            // Skicka data till servern
+            fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    attending: isAttending,
+                    guests: guests,
+                    message: message
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Servern returnerade ett fel: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Anpassa meddelandetexten baserat på om personen kommer eller inte
+                    const currentLang = document.getElementById('language-select').value;
+                    const t = translations[currentLang];
+                    
+                    if (isAttending) {
+                        document.getElementById('modal-message').textContent = t.modalAttendingMessage || t.modalMessage;
+                    } else {
+                        document.getElementById('modal-message').textContent = t.modalNotAttendingMessage || t.modalMessage;
+                    }
+                    
+                    showModal();
+                    document.getElementById('rsvp-form').reset();
+                } else {
+                    alert("Ett fel uppstod: " + (data.error || "Okänt fel"));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Ett fel uppstod: " + error.message);
+            })
+            .finally(() => {
+                // Återställ knappen
+                sendButton.textContent = originalButtonText;
+                sendButton.disabled = false;
+            });
+        });
+
+        // Uppdatera översättningarna för att inkludera specifika meddelanden
+        translations.sv.modalAttendingMessage = "Tack för ditt svar. Vi ser fram emot att träffa dig på vår stora dag!";
+        translations.sv.modalNotAttendingMessage = "Tack för ditt svar. Vi är ledsna att du inte kan komma.";
+
+        translations.en.modalAttendingMessage = "Thank you for your response. We look forward to seeing you on our big day!";
+        translations.en.modalNotAttendingMessage = "Thank you for your response. We're sorry you can't make it.";
+
+        translations.fa.modalAttendingMessage = "از پاسخ شما متشکریم. ما مشتاقانه منتظر دیدار شما در روز بزرگمان هستیم!";
+        translations.fa.modalNotAttendingMessage = "از پاسخ شما متشکریم. متأسفیم که نمی توانید بیایید.";
+    </script>
+</body>
+</html>
